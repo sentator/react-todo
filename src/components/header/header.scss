@@ -1,0 +1,34 @@
+.header {
+	display: flex;
+	background: rgba(0, 0, 0, 0.003);
+	border-bottom: 1px solid rgba(153, 153, 153, 0.25);
+	box-shadow: inset 0 -2px 1px rgb(0 0 0 / 3%);
+	&__toggler {
+		flex: 0 0 65px;
+		min-height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	&__form {
+		flex: 1 1 100%;
+	}
+	&__textfield {
+		width: 100%;
+		padding: 16px;
+		font-size: 1.5rem;
+		color: var(--main-dark-color);
+		border: none;
+		background: transparent;
+		&:focus {
+			outline: none;
+		}
+		&::placeholder {
+			font-style: italic;
+			color: var(--main-gray-color);
+		}
+		@media (max-width: 48em) {
+			font-size: 1.25rem;
+		}
+	}
+}

@@ -1,0 +1,26 @@
+.todo-filter {
+	&__input {
+		&.checked + .todo-filter__label,
+		&.checked + .todo-filter__label:hover {
+			border: 1px solid rgba(175, 47, 47, 0.2);
+		}
+		&:focus-visible + .todo-filter__label {
+			outline: 2px solid var(--accent-color);
+			outline-offset: 2px;
+		}
+	}
+	&__label {
+		display: block;
+		padding: 3px 7px;
+		border: 1px solid transparent;
+		border-radius: 3px;
+		font-size: 0.875rem;
+		line-height: 1.2;
+		color: #777777;
+		cursor: pointer;
+		transition: border 0.2s ease-in-out;
+		&:hover {
+			border: 1px solid rgba(175, 47, 47, 0.1);
+		}
+	}
+}

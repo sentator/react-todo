@@ -1,0 +1,53 @@
+:root {
+	--main-dark-color: #4d4d4d;
+	--main-gray-color: #e6e6e6;
+	--main-red-color: #cc9a9a;
+	--accent-color: rgb(82, 82, 233);
+	--hover-red-color: #af5b5e;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	padding: 50px 15px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+	clip: rect(0 0 0 0);
+	overflow: hidden;
+}
+.title {
+	margin-bottom: 0.2em;
+	font-size: 100px;
+	font-weight: 100;
+	text-align: center;
+	color: rgba(175, 47, 47, 0.15);
+}
+.app {
+	max-width: 34.5em;
+	margin: 0 auto;
+	background: #ffffff;
+	box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+}
+.app[data-empty="true"] .app__body,
+.app[data-empty="true"] .app__footer {
+	display: none;
+}
+.app[data-empty="true"] .toggle-all {
+	opacity: 0;
+	visibility: hidden;
+}
+.app__header {
+}
+.app__body {
+}
+.app__footer {
+}
