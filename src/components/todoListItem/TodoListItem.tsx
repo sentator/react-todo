@@ -1,16 +1,29 @@
 import React from "react";
+import classnames from "clsx";
 
 import { ITodoItem } from "../../types";
 import { todosContext } from "../../context";
+import { useConfirmationDialog } from "../../hooks";
 import Checkbox from "../checkbox/Checkbox";
 
 import "./todoListItem.scss";
 
 const TodoListItem: React.FC<ITodoItem> = ({ id, value, completed }) => {
 	const { updateItem, removeItem } = React.useContext(todosContext);
+	const { confirmDialog } = useConfirmationDialog({
+		message: `Do you want to delete "${value}" from the list?`,
+		onConfirmationSuccess: () => removeItem(id),
+	});
+	const [isEditing, setEditing] = React.useState<boolean>(false);
+	const inputEditRef = React.useRef<HTMLInputElement>(null);
+	const itemClassnames = classnames("item-todo", { editing: isEditing, completed });
+
+	React.useEffect(() => {
+		inputEditRef.current?.focus();
+	}, [isEditing]);
 
 	const removeTodoItem = () => {
-		removeItem(id);
+		confirmDialog();
 	};
 
 	const toggleCheckbox = () => {
@@ -21,9 +34,26 @@ const TodoListItem: React.FC<ITodoItem> = ({ id, value, completed }) => {
 		});
 	};
 
+	const showEditForm = () => {
+		setEditing(true);
+	};
+
+	const editTodoItem = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const currentValue = inputEditRef.current?.value;
+
+		if (currentValue) {
+			updateItem({ id, value: currentValue, completed });
+		} else {
+			removeTodoItem();
+			inputEditRef.current && (inputEditRef.current.value = value);
+		}
+		setEditing(false);
+	};
+
 	return (
 		<>
-			<span className="item-todo" data-todo={id}>
+			<span className={itemClassnames} data-todo={id} onDoubleClick={showEditForm}>
 				<span className="item-todo__checkbox">
 					<Checkbox id={id} value={completed} onChange={toggleCheckbox} />
 				</span>
@@ -36,6 +66,9 @@ const TodoListItem: React.FC<ITodoItem> = ({ id, value, completed }) => {
 						></path>
 					</svg>
 				</button>
+				<form className="item-todo__form-edit" onSubmit={editTodoItem} onBlur={editTodoItem}>
+					<input className="item-todo__input-edit" type="text" ref={inputEditRef} defaultValue={value} />
+				</form>
 			</span>
 		</>
 	);

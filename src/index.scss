@@ -1,3 +1,5 @@
+// react confirm dialog base styles
+@import "react-confirm-alert/src/react-confirm-alert.css";
 :root {
 	--main-dark-color: #4d4d4d;
 	--main-gray-color: #e6e6e6;
@@ -39,7 +41,10 @@ body {
 }
 .app[data-empty="true"] .app__body,
 .app[data-empty="true"] .app__footer {
-	display: none;
+	// display: none;
+	opacity: 0;
+	visibility: hidden;
+	max-height: 0;
 }
 .app[data-empty="true"] .toggle-all {
 	opacity: 0;
@@ -48,6 +53,65 @@ body {
 .app__header {
 }
 .app__body {
+	opacity: 1;
+	visibility: visible;
+	max-height: 100%;
+	transition: all 0.3s ease-in-out;
 }
 .app__footer {
+	opacity: 1;
+	visibility: visible;
+	max-height: 100%;
+	transition: all 0.3s ease-in-out;
+}
+
+.confirmation-dialog {
+	&.react-confirm-alert-overlay {
+		background: rgba(#000000, 0.5);
+	}
+	.react-confirm-alert {
+		margin: 0 16px;
+	}
+	/* .confirmation-dialog__body */
+	&__body {
+		padding: 16px 32px;
+		background: #ffffff;
+		border-radius: 8px;
+		&:focus {
+			outline: none;
+		}
+	}
+	/* .confirmation-dialog__title */
+	&__title {
+		font-size: 16px;
+		font-weight: 700;
+		margin-bottom: 20px;
+	}
+	/* .confirmation-dialog__message */
+	&__message {
+		padding: 32px 0;
+		font-size: 20px;
+	}
+	/* .confirmation-dialog__buttons */
+	&__buttons {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 0px 8px;
+	}
+	/* .confirmation-dialog__btn */
+	&__btn {
+		padding: 10px 16px;
+		border-radius: 8px;
+		border: none;
+		cursor: pointer;
+		/* .confirmation-dialog__btn--confirm */
+		&--confirm {
+			background-color: lightgreen;
+		}
+		/* .confirmation-dialog__btn--cancel */
+		&--cancel {
+			background-color: #ff8b8f;
+		}
+	}
 }

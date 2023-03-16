@@ -1,2 +1,3 @@
 import useMount from "../hooks/useMount";
-export { useMount };
+import useConfirmationDialog from "../hooks/useConfirmationDialog";
+export { useMount, useConfirmationDialog };

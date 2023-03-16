@@ -12,9 +12,16 @@ interface ContextProps {
 }
 
 const Context: React.FC<ContextProps> = ({ children }) => {
-	const [activeFilter, setActiveFilter] = React.useState<FILTERS>(FILTERS.ALL);
+	const searchParams = new URLSearchParams(window.location.search);
+	const initialFilter = (searchParams.get("filter") as FILTERS) || FILTERS.ALL;
+
+	const [activeFilter, setActiveFilter] = React.useState<FILTERS>(initialFilter);
 
 	const changeFilter = (filter: FILTERS) => {
+		const url = filter !== FILTERS.ALL ? `${window.location.pathname}?filter=${filter}` : window.location.pathname;
+
+		window.history.pushState(null, "", url);
+
 		setActiveFilter(filter);
 	};
 
