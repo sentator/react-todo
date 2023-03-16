@@ -1,7 +1,7 @@
 import React from "react";
 
 import { todosContext, activeFilterContext } from "../context";
-import { filterTodos } from "./utils";
+import { filterTodos } from "../utils";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import TodoList from "./todoList/TodoList";

@@ -1,4 +1,4 @@
-import { FILTERS, ITodoItem } from "../../types";
+import { FILTERS, ITodoItem } from "../types";
 
 export const saveTodosToLocalStorage = (items: ITodoItem[]) => {
 	const json = JSON.stringify(items);

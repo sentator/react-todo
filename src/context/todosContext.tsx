@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ITodoItem, TFilterCallback } from "../types";
-import { saveTodosToLocalStorage, getTodosFromLocalStorage } from "../components/utils";
+import { saveTodosToLocalStorage, getTodosFromLocalStorage } from "../utils";
 
 interface ITodosContext {
 	todos: ITodoItem[];
