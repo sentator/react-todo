@@ -105,6 +105,9 @@ body {
 		border-radius: 8px;
 		border: none;
 		cursor: pointer;
+		&:focus-visible {
+			outline: 2px solid var(--accent-color);
+		}
 		/* .confirmation-dialog__btn--confirm */
 		&--confirm {
 			background-color: lightgreen;

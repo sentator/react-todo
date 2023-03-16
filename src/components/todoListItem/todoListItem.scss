@@ -22,6 +22,7 @@
 	&.editing .item-todo__btn-remove {
 		display: none;
 	}
+	&.editing .item-todo__input-edit,
 	&.editing .item-todo__input-edit {
 		display: block;
 	}
@@ -64,6 +65,9 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent-color);
 		}
+	}
+	&__form-edit {
+		display: none;
 	}
 	&__input-edit {
 		display: none;

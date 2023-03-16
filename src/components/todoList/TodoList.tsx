@@ -12,13 +12,6 @@ interface TodoListProps {
 
 const TodoList: React.FC<TodoListProps> = ({ value = [] }) => {
 	return (
-		// <ul className="todos__list">
-		// 	{value.map((item) => (
-		// 		<li className="todos__item" key={item.id}>
-		// 			<TodoListItem {...item} />
-		// 		</li>
-		// 	))}
-		// </ul>
 		<TransitionGroup className="todos__list" component="ul">
 			{value.map((item) => (
 				<CSSTransition key={item.id} timeout={300} appear classNames="todos-item-transition">
