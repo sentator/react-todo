@@ -8,10 +8,15 @@
 		color: var(--main-gray-color);
 		text-decoration: line-through;
 	}
-	&.focused .item-todo__btn-remove,
+	&.focused .item-todo__actions,
 	&:hover .item-todo__btn-remove {
 		opacity: 1;
 		visibility: visible;
+		transform: scale(1);
+	}
+	&.focused:hover .item-todo__btn-remove {
+		opacity: 0;
+		visibility: hidden;
 	}
 	&.editing .checkbox {
 		opacity: 0;
@@ -52,7 +57,8 @@
 		color: var(--main-red-color);
 		opacity: 0;
 		visibility: hidden;
-		transition: color 0.3s ease-in-out;
+		transform: scale(0);
+		transition: all 0.3s ease-in-out;
 		svg {
 			min-width: 100%;
 			min-height: 100%;
@@ -61,6 +67,52 @@
 		}
 		&:hover {
 			color: var(--hover-red-color);
+		}
+		&:focus-visible {
+			outline: 2px solid var(--accent-color);
+		}
+	}
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s ease-in-out;
+	}
+	&__action-edit {
+		display: block;
+		width: 16px;
+		height: 16px;
+		border: none;
+		background: none;
+		cursor: pointer;
+		color: var(--main-dark-color);
+		transition: color 0.3s ease-in-out;
+		svg {
+			min-width: 100%;
+			min-height: 100%;
+			color: inherit;
+			pointer-events: none;
+		}
+		&:focus-visible {
+			outline: 2px solid var(--accent-color);
+		}
+	}
+	&__action-remove {
+		display: block;
+		width: 16px;
+		height: 16px;
+		border: none;
+		background: none;
+		cursor: pointer;
+		color: var(--main-red-color);
+		transition: color 0.3s ease-in-out;
+		svg {
+			min-width: 100%;
+			min-height: 100%;
+			color: inherit;
+			pointer-events: none;
 		}
 		&:focus-visible {
 			outline: 2px solid var(--accent-color);
@@ -88,32 +140,6 @@
 		}
 		@media (max-width: 48em) {
 			font-size: 1rem;
-		}
-	}
-	&__remove {
-		position: absolute;
-		top: 50%;
-		right: 12px;
-		transform: translateY(-50%);
-		display: block;
-		width: 16px;
-		height: 16px;
-		border: none;
-		background: none;
-		cursor: pointer;
-		color: var(--main-red-color);
-		opacity: 0;
-		pointer-events: none;
-		transition: color 0.3s ease-in-out;
-		svg {
-			min-width: 100%;
-			min-height: 100%;
-			color: inherit;
-			pointer-events: none;
-		}
-		&:focus-visible {
-			opacity: 1;
-			outline: 2px solid var(--accent-color);
 		}
 	}
 }

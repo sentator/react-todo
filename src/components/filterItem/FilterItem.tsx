@@ -2,7 +2,6 @@ import React from "react";
 import classnames from "clsx";
 
 import { FILTERS } from "../../types";
-import { activeFilterContext } from "../../context";
 
 import "./filterItem.scss";
 
@@ -10,11 +9,12 @@ interface FilterItemProps {
 	name: string;
 	value: FILTERS;
 	id: string;
+	checkedValue: FILTERS;
+	changeValue: (filters: FILTERS) => void;
 }
 
-const FilterItem: React.FC<FilterItemProps> = ({ name, value, id }) => {
-	const { activeFilter, changeFilter } = React.useContext(activeFilterContext);
-	const isChecked = value === activeFilter;
+const FilterItem: React.FC<FilterItemProps> = ({ name, value, id, checkedValue, changeValue }) => {
+	const isChecked = value === checkedValue;
 	const inputClassnames = classnames("todo-filter__input", "visually-hidden", { checked: isChecked });
 
 	const changeActiveFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ const FilterItem: React.FC<FilterItemProps> = ({ name, value, id }) => {
 
 		const filter = event.target.value as FILTERS;
 
-		changeFilter(filter);
+		changeValue(filter);
 	};
 
 	return (

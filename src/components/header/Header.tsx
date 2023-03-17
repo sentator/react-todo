@@ -1,15 +1,18 @@
 import React from "react";
 
-import { ITodoItem } from "../../types";
-import { todosContext } from "../../context";
+import { TodoItem } from "../../types";
 import CompletionToggler from "../completionToggler/CompletionToggler";
 
 import "./header.scss";
 
-const Header: React.FC = () => {
-	const { todos, addItem, updateMany, totalItems, completedItems } = React.useContext(todosContext);
+interface HeaderProps {
+	addItem: (item: TodoItem) => void;
+	toggleAllTodosStatus: () => void;
+	isCompletionTogglerChecked: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ addItem, toggleAllTodosStatus, isCompletionTogglerChecked }) => {
 	const inputRef = React.useRef<HTMLInputElement>(null);
-	const isTogglerChecked = !!totalItems && totalItems === completedItems;
 
 	const addNewTodo = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -17,7 +20,7 @@ const Header: React.FC = () => {
 		const value = inputRef.current?.value;
 
 		if (value) {
-			const todoItem: ITodoItem = {
+			const todoItem: TodoItem = {
 				id: Date.now().toString(),
 				value,
 				completed: false,
@@ -29,16 +32,10 @@ const Header: React.FC = () => {
 		event.currentTarget.reset();
 	};
 
-	const toggleAllTodosStatus = () => {
-		const updatedTodos = todos.map((item) => ({ ...item, completed: !isTogglerChecked }));
-
-		updateMany(updatedTodos);
-	};
-
 	return (
 		<div className="header">
 			<div className="header__toggler">
-				<CompletionToggler value={isTogglerChecked} onChange={toggleAllTodosStatus} />
+				<CompletionToggler value={isCompletionTogglerChecked} onChange={toggleAllTodosStatus} />
 			</div>
 			<form className="header__form" onSubmit={addNewTodo}>
 				<input className="header__textfield" type="text" placeholder="What needs to be done?" ref={inputRef} />

@@ -1,25 +1,27 @@
 import React from "react";
 
-import { FILTERS } from "../../types";
+import { FilterItem as ItemFilter, FILTERS } from "../../types";
 import FilterItem from "../filterItem/FilterItem";
 
 import "./filtersList.scss";
 
-const filters = [
-	{ name: "todo-filters", value: FILTERS.ALL, id: "todo-filter-all" },
-	{ name: "todo-filters", value: FILTERS.ACTIVE, id: "todo-filter-active" },
-	{ name: "todo-filters", value: FILTERS.COMPLETED, id: "todo-filter-completed" },
-];
+interface FiltersListProps {
+	checkedValue: FILTERS;
+	values: ItemFilter[];
+	changeValue: (filters: FILTERS) => void;
+}
 
-const FiltersList: React.FC = () => {
+const FiltersList: React.FC<FiltersListProps> = ({ checkedValue, values, changeValue }) => {
 	return (
-		<ul className="todo-filters">
-			{filters.map((filter) => (
-				<li className="todo-filters__item" key={filter.id}>
-					<FilterItem {...filter} />
-				</li>
-			))}
-		</ul>
+		<form className="todo-filters">
+			<ul className="todo-filters__list">
+				{values.map((filter) => (
+					<li className="todo-filters__item" key={filter.id}>
+						<FilterItem {...filter} checkedValue={checkedValue} changeValue={changeValue} />
+					</li>
+				))}
+			</ul>
+		</form>
 	);
 };
 
