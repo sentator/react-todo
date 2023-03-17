@@ -6,11 +6,9 @@ interface CheckboxProps {
 	id: string;
 	value: boolean;
 	onChange: () => void;
-	onFocus: () => void;
-	onBlur: () => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ id, value, onChange, onFocus, onBlur }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ id, value, onChange }) => {
 	return (
 		<span className="checkbox">
 			<input
@@ -19,8 +17,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ id, value, onChange, onFocus, onBlu
 				id={id}
 				checked={value}
 				onChange={onChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
 			/>
 			<label className="checkbox__label" htmlFor={id} onDoubleClick={(e) => e.stopPropagation()}></label>
 		</span>

@@ -18,24 +18,19 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 		message: `Do you want to delete "${value}" from the list?`,
 		onConfirmationSuccess: () => removeItem(id),
 	});
+	const { isFocusVisible } = useFocusVisible();
 	const [isEditing, setEditing] = React.useState<boolean>(false);
-	let { isFocusVisible } = useFocusVisible();
 	const [isFocused, setFocused] = React.useState<boolean>(false);
 	const inputEditRef = React.useRef<HTMLInputElement>(null);
 	const itemClassnames = classnames("item-todo", {
 		editing: isEditing,
 		completed,
-		focused: isFocused && isFocusVisible,
+		focused: isFocused,
 	});
 
 	React.useEffect(() => {
 		inputEditRef.current?.focus();
 	}, [isEditing]);
-
-	// hidding item-todo__actions when !isFocusVisible
-	React.useEffect(() => {
-		hideTodoItemActions();
-	}, [isFocusVisible]);
 
 	const removeTodoItem = () => {
 		confirmDialog();
@@ -67,24 +62,24 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 	};
 
 	const showTodoItemActions = () => {
-		setFocused(true);
+		isFocusVisible && setFocused(true);
 	};
 
 	const hideTodoItemActions = () => {
-		!isFocusVisible && setFocused(false);
+		setFocused(false);
 	};
 
 	return (
 		<>
-			<span className={itemClassnames} data-todo={id} onDoubleClick={showEditForm}>
+			<span
+				className={itemClassnames}
+				data-todo={id}
+				onDoubleClick={showEditForm}
+				onFocus={showTodoItemActions}
+				onBlur={hideTodoItemActions}
+			>
 				<span className="item-todo__checkbox">
-					<Checkbox
-						id={id}
-						value={completed}
-						onChange={toggleCheckbox}
-						onFocus={showTodoItemActions}
-						onBlur={hideTodoItemActions}
-					/>
+					<Checkbox id={id} value={completed} onChange={toggleCheckbox} />
 				</span>
 				<span className="item-todo__value">{value}</span>
 				<div className="item-todo__actions">
