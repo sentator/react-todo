@@ -1,28 +1,37 @@
 import React from "react";
 
-import { TodoItem } from "../types";
+import { TodoItem, FILTERS, FilterItem } from "../types";
 import { filterTodos } from "../utils";
-import { todosContext, activeFilterContext } from "../context";
+import { todosContext } from "../context";
 import Header from "./header/Header";
 import CreateTodoForm from "./createTodoForm/CreateTodoForm";
 import TodoList from "./todoList/TodoList";
 import Footer from "./footer/Footer";
+import FiltersList from "./filtersList/FiltersList";
 
 function App() {
 	const { todos, addItem, removeItem, removeMany, updateItem, updateMany, totalItems, activeItems, completedItems } =
 		React.useContext(todosContext);
-	const { activeFilter, filters, changeFilter } = React.useContext(activeFilterContext);
+	const searchParams = new URLSearchParams(window.location.search);
+	const initialFilter = (searchParams.get("filter") as FILTERS) || FILTERS.ALL;
+	const [activeFilter, setActiveFilter] = React.useState<FILTERS>(initialFilter);
+
+	const INPUT_FILTER_ITEM_NAME = "todo-filters";
+	const INPUT_CREATE_TODO_NAME = "todoItemValue";
+	const FILTERS_LIST: FilterItem[] = [
+		{ name: INPUT_FILTER_ITEM_NAME, value: FILTERS.ALL, id: "todo-filter-all" },
+		{ name: INPUT_FILTER_ITEM_NAME, value: FILTERS.ACTIVE, id: "todo-filter-active" },
+		{ name: INPUT_FILTER_ITEM_NAME, value: FILTERS.COMPLETED, id: "todo-filter-completed" },
+	];
 
 	const filteredTodos = filterTodos(todos, activeFilter);
 	const isCompletionTogglerChecked = !!totalItems && totalItems === completedItems;
-
-	const createTodoFormInputName = "todoItemValue";
 
 	const addNewTodoItem = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-		const value = (formData.get(createTodoFormInputName) as string) || null;
+		const value = (formData.get(INPUT_CREATE_TODO_NAME) as string) || null;
 
 		if (value) {
 			const todoItem: TodoItem = {
@@ -36,7 +45,6 @@ function App() {
 
 		event.currentTarget.reset();
 	};
-
 	const toggleAllTodosStatus = () => {
 		const updatedTodos = todos.map((item) => ({ ...item, completed: !isCompletionTogglerChecked }));
 
@@ -45,6 +53,17 @@ function App() {
 	const removeCompletedTodos = () => {
 		const filterCallback = (item: TodoItem) => !item.completed;
 		removeMany(filterCallback);
+	};
+	const changeActiveFilter = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		const formData = new FormData(event.currentTarget);
+		const filter = formData.get(INPUT_FILTER_ITEM_NAME) as FILTERS;
+		const url = filter !== FILTERS.ALL ? `${window.location.pathname}?filter=${filter}` : window.location.pathname;
+
+		window.history.pushState(null, "", url);
+
+		setActiveFilter(filter);
 	};
 
 	return (
@@ -55,9 +74,7 @@ function App() {
 					<Header
 						toggleAllTodosStatus={toggleAllTodosStatus}
 						isCompletionTogglerChecked={isCompletionTogglerChecked}
-						slotForm={
-							<CreateTodoForm inputName={createTodoFormInputName} addNewTodoItem={addNewTodoItem} />
-						}
+						slotForm={<CreateTodoForm inputName={INPUT_CREATE_TODO_NAME} addNewTodoItem={addNewTodoItem} />}
 					/>
 				</header>
 				<main className="app__body">
@@ -70,10 +87,13 @@ function App() {
 						activeItems={activeItems}
 						isBtnClearVisible={!!completedItems}
 						removeCompletedTodos={removeCompletedTodos}
-						filters={filters}
-						checkedFilter={activeFilter}
-						changeFilter={changeFilter}
-						// slotFormFilters={}
+						slotFilters={
+							<FiltersList
+								selectedFilter={activeFilter}
+								filters={FILTERS_LIST}
+								changeSelectedFilter={changeActiveFilter}
+							/>
+						}
 					/>
 				</footer>
 			</div>

@@ -6,18 +6,18 @@ import FilterItem from "../filterItem/FilterItem";
 import "./filtersList.scss";
 
 interface FiltersListProps {
-	checkedValue: FILTERS;
-	values: ItemFilter[];
-	changeValue: (filters: FILTERS) => void;
+	selectedFilter: FILTERS;
+	filters: ItemFilter[];
+	changeSelectedFilter: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const FiltersList: React.FC<FiltersListProps> = ({ checkedValue, values, changeValue }) => {
+const FiltersList: React.FC<FiltersListProps> = ({ selectedFilter, filters, changeSelectedFilter }) => {
 	return (
-		<form className="todo-filters">
+		<form className="todo-filters" onChange={changeSelectedFilter}>
 			<ul className="todo-filters__list">
-				{values.map((filter) => (
+				{filters.map((filter) => (
 					<li className="todo-filters__item" key={filter.id}>
-						<FilterItem {...filter} checkedValue={checkedValue} changeValue={changeValue} />
+						<FilterItem {...filter} checkedValue={selectedFilter} />
 					</li>
 				))}
 			</ul>
