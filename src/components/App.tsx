@@ -8,6 +8,7 @@ import CreateTodoForm from "./createTodoForm/CreateTodoForm";
 import TodoList from "./todoList/TodoList";
 import Footer from "./footer/Footer";
 import FiltersList from "./filtersList/FiltersList";
+import EmptyListMessage from "./emptyListMessage/EmptyListMessage";
 
 function App() {
 	const { todos, addItem, removeItem, removeMany, updateItem, updateMany, totalItems, activeItems, completedItems } =
@@ -26,6 +27,9 @@ function App() {
 
 	const filteredTodos = filterTodos(todos, activeFilter);
 	const isCompletionTogglerChecked = !!totalItems && totalItems === completedItems;
+	const isListActiveEmpty = activeFilter === FILTERS.ACTIVE && activeItems === 0;
+	const isListCompletedEmpty = activeFilter === FILTERS.COMPLETED && completedItems === 0;
+	const isListNonEmpty = !!filteredTodos.length;
 
 	const addNewTodoItem = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -79,7 +83,13 @@ function App() {
 				</header>
 				<main className="app__body">
 					<div className="todos">
-						<TodoList value={filteredTodos} updateItem={updateItem} removeItem={removeItem} />
+						{isListActiveEmpty && <EmptyListMessage message="There are no active items in the ToDo list" />}
+						{isListCompletedEmpty && (
+							<EmptyListMessage message="There are no completed items in the ToDo list" />
+						)}
+						{isListNonEmpty && (
+							<TodoList value={filteredTodos} updateItem={updateItem} removeItem={removeItem} />
+						)}
 					</div>
 				</main>
 				<footer className="app__footer">

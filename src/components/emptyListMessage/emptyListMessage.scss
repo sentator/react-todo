@@ -1,0 +1,10 @@
+.empty-list-message {
+	padding: 12px 24px;
+	min-height: 65px;
+	font-size: 1.25rem;
+	display: flex;
+	align-items: center;
+	@media (max-width: 48em) {
+		font-size: 1rem;
+	}
+}

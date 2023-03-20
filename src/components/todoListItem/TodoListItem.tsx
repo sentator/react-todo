@@ -5,10 +5,11 @@ import { useFocusVisible } from "react-aria";
 import { TodoItem } from "../../types";
 import { useConfirmationDialog } from "../../hooks";
 import Checkbox from "../checkbox/Checkbox";
+import EditTodoForm from "../editTodoForm/EditTodoForm";
 
 import "./todoListItem.scss";
 
-interface TodoListItemProps extends TodoItem {
+interface TodoListItemProps extends Pick<TodoItem, "id" | "value" | "completed"> {
 	updateItem: (todo: TodoItem) => void;
 	removeItem: (id: TodoItem["id"]) => void;
 }
@@ -21,16 +22,12 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 	const { isFocusVisible } = useFocusVisible();
 	const [isEditing, setEditing] = React.useState<boolean>(false);
 	const [isFocused, setFocused] = React.useState<boolean>(false);
-	const inputEditRef = React.useRef<HTMLInputElement>(null);
+	const EDIT_FORM_INPUT_NAME = "edited-value";
 	const itemClassnames = classnames("item-todo", {
 		editing: isEditing,
 		completed,
 		focused: isFocused,
 	});
-
-	React.useEffect(() => {
-		inputEditRef.current?.focus();
-	}, [isEditing]);
 
 	const removeTodoItem = () => {
 		confirmDialog();
@@ -50,13 +47,13 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 
 	const editTodoItem = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const currentValue = inputEditRef.current?.value;
+		const formData = new FormData(event.currentTarget);
+		const currentValue = (formData.get(EDIT_FORM_INPUT_NAME) as string) || null;
 
 		if (currentValue) {
 			updateItem({ id, value: currentValue, completed });
 		} else {
 			removeTodoItem();
-			inputEditRef.current && (inputEditRef.current.value = value);
 		}
 		setEditing(false);
 	};
@@ -73,7 +70,6 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 		<>
 			<span
 				className={itemClassnames}
-				data-todo={id}
 				onDoubleClick={showEditForm}
 				onFocus={showTodoItemActions}
 				onBlur={hideTodoItemActions}
@@ -103,9 +99,9 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 						</svg>
 					</button>
 				</div>
-				<form className="item-todo__form-edit" onSubmit={editTodoItem} onBlur={editTodoItem}>
-					<input className="item-todo__input-edit" type="text" ref={inputEditRef} defaultValue={value} />
-				</form>
+				{isEditing && (
+					<EditTodoForm initialValue={value} editTodoItem={editTodoItem} inputName={EDIT_FORM_INPUT_NAME} />
+				)}
 				<button className="item-todo__btn-remove" onClick={removeTodoItem}>
 					<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path
