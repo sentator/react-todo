@@ -3,7 +3,7 @@ import classnames from "clsx";
 import { useFocusVisible } from "react-aria";
 
 import { TodoItem } from "../../types";
-import { useConfirmationDialog } from "../../hooks";
+import { useConfirmDialog } from "../../hooks";
 import Checkbox from "../checkbox/Checkbox";
 import EditTodoForm from "../editTodoForm/EditTodoForm";
 
@@ -15,9 +15,9 @@ interface TodoListItemProps extends Pick<TodoItem, "id" | "value" | "completed">
 }
 
 const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updateItem, removeItem }) => {
-	const { confirmDialog } = useConfirmationDialog({
+	const { confirmDialog, Dialog } = useConfirmDialog({
+		onConfirmationSubmit: () => removeItem(id),
 		message: `Do you want to delete "${value}" from the list?`,
-		onConfirmationSuccess: () => removeItem(id),
 	});
 	const { isFocusVisible } = useFocusVisible();
 	const [isEditing, setEditing] = React.useState<boolean>(false);
@@ -114,6 +114,7 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ id, value, completed, updat
 					</svg>
 				</button>
 			</span>
+			{Dialog}
 		</>
 	);
 };

@@ -121,3 +121,109 @@ body {
 		}
 	}
 }
+.confirm-dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&__backdrop {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: rgba(#000000, 0.5);
+	}
+	/* .confirmation-dialog__body */
+	&__body {
+		position: relative;
+		z-index: 2;
+		flex: 0 1 400px;
+		padding: 16px 32px;
+		background: #ffffff;
+		border-radius: 8px;
+		&:focus {
+			outline: none;
+		}
+	}
+	&__body-container {
+	}
+	/* .confirmation-dialog__title */
+	&__title {
+		font-size: 16px;
+		font-weight: 700;
+		margin-bottom: 20px;
+	}
+	/* .confirmation-dialog__message */
+	&__message {
+		padding: 32px 0;
+		font-size: 20px;
+	}
+	/* .confirmation-dialog__buttons */
+	&__buttons {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 0px 8px;
+	}
+	/* .confirmation-dialog__btn */
+	&__btn {
+		padding: 10px 16px;
+		border-radius: 8px;
+		border: none;
+		cursor: pointer;
+		&:focus-visible {
+			outline: 2px solid var(--accent-color);
+		}
+		/* .confirmation-dialog__btn--confirm */
+		&--confirm {
+			background-color: lightgreen;
+		}
+		/* .confirmation-dialog__btn--cancel */
+		&--cancel {
+			background-color: #ff8b8f;
+		}
+	}
+}
+.confirm-dialog-backdrop-transition {
+	&-enter,
+	&-appear {
+		opacity: 0;
+	}
+	&-enter-active,
+	&-appear-active {
+		opacity: 1;
+		transition: opacity 0.3s ease-in-out;
+	}
+	&-exit {
+		opacity: 1;
+	}
+	&-exit-active {
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out;
+	}
+}
+.confirm-dialog-body-transition {
+	&-enter,
+	&-appear {
+		opacity: 0;
+		transform: translateY(-100%) scale(0.7);
+	}
+	&-enter-active,
+	&-appear-active {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	}
+	&-exit {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+	&-exit-active {
+		opacity: 0;
+		transform: translateY(-100%) scale(0.7);
+		transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	}
+}
